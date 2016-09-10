@@ -41,3 +41,5 @@ captures/
 
 # npm stuff
 node_modules/
+
+.DS_Store
