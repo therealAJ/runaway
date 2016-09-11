@@ -27,7 +27,7 @@ app.use(busboy());
  * Upload the file to the path
  */
 app.post('/fileupload/:path?', function (req, res) {
-  let path;
+  var path;
   if (req.params.path)
     path = ROOT + req.params.path;
   else
