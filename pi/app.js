@@ -10,8 +10,8 @@ var ROOT = __dirname + '/';
 
 //app.use(express.static(ROOT));
 app.use('/data', serveIndex(ROOT, {
-  'template': function(locals, callback) {
-    files = locals.fileList.map(function(item) {
+  'template': function (locals, callback) {
+    files = locals.fileList.map(function (item) {
       return {
         name: item.name,
         isDirectory: !(item.stat.nlink == 1)
@@ -26,12 +26,21 @@ app.use(busboy());
 /*
  * Upload the file to the path
  */
-app.post('/fileupload', function(req, res) {
+app.post('/fileupload/:path?', function (req, res) {
+  let path;
+  if (req.params.path)
+    path = ROOT + req.params.path;
+  else
+    path = ROOT;
+  
   var fstream;
   req.pipe(req.busboy);
   req.busboy.on('file', function (fieldname, file, filename) {
     console.log("Uploading: " + filename);
-    fstream = fs.createWriteStream(ROOT + filename);
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path);
+    }
+    fstream = fs.createWriteStream(path + '/' + filename);
     file.pipe(fstream);
     fstream.on('close', function () {
       res.send('Upload successful: ' + filename);
