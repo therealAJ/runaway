@@ -1,14 +1,26 @@
-let express = require("express");
-let fs = require("fs");
-let serveIndex = require('serve-index');
+var express = require("express");
+var fs = require("fs");
+var serveIndex = require('serve-index');
+var serveStatic = require('serve-static');
 var busboy = require('connect-busboy');
 
-let app = express();
+var app = express();
 
-let ROOT = __dirname + '\\';
+var ROOT = __dirname + '/';
 
-app.use(express.static(ROOT));
-app.use('/data', serveIndex(ROOT));
+//app.use(express.static(ROOT));
+app.use('/data', serveIndex(ROOT, {
+  'template': function(locals, callback) {
+    files = locals.fileList.map(function(item) {
+      return {
+        name: item.name,
+        isDirectory: !(item.stat.nlink == 1)
+      };
+    });
+    callback(null, JSON.stringify(files));
+  }
+}));
+app.use('/data', serveStatic(ROOT))
 app.use(busboy());
 
 /*
