@@ -34,7 +34,7 @@ app.post('/fileupload', function(req, res) {
     fstream = fs.createWriteStream(ROOT + filename);
     file.pipe(fstream);
     fstream.on('close', function () {
-      res.redirect('back');
+      res.send('Upload successful: ' + filename);
     });
   });
 });
