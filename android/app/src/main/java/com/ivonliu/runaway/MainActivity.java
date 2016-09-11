@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int TYPE_PAST = 1;
 
     private OnFabClickListener mFabClickListener;
+
     public void setFabClickListener(OnFabClickListener listener) {
         mFabClickListener = listener;
     }

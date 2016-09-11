@@ -33,8 +33,8 @@ public class FileListAdapter extends ArrayAdapter<FileListItem> {
         }
 
         TextView textView = (TextView) view.findViewById(R.id.file_list_text);
-        String dirString = item.isDirectory ? "Dir: " : "";
-        textView.setText(dirString + item.name);
+        String dirString = item.isDirectory ? "/" : "";
+        textView.setText(item.name + dirString);
 
         return view;
     }
